@@ -6,21 +6,18 @@ import { Dialog } from "primereact/dialog";
 const ProductCard = ({ product }) => {
   const [visible, setVisible] = useState(false);
 
-  const header = (
-    <img
-      alt={product.title}
-      src={product.image}
-      style={{ height: "230px", objectFit: "cover" }}
-    />
-  );
-
   return (
     <>
       <Card
-        title={<div className="truncate font-bold">{product.title}</div>}
+        title={product.title}
         subTitle={`R$ ${product.price}`}
-        header={header}
-        className="shadow-2 hover:shadow-5 transition-duration-300 border-none"
+        header={
+          <img
+            src={product.image}
+            alt={product.title}
+            style={{ height: "230px", objectFit: "cover", width: "100%" }}
+          />
+        }
       >
         <Button
           label="Ver Detalhes"
@@ -31,7 +28,7 @@ const ProductCard = ({ product }) => {
       </Card>
 
       <Dialog
-        header="Informações Técnicas"
+        header="Detalhes do Produto"
         visible={visible}
         style={{ width: "90vw", maxWidth: "450px" }}
         onHide={() => setVisible(false)}
@@ -39,14 +36,15 @@ const ProductCard = ({ product }) => {
         <img
           src={product.image}
           alt={product.title}
-          className="w-full border-round mb-3 shadow-2"
+          className="w-full border-round mb-3"
         />
-        <h2 className="text-teal-900 m-0">{product.title}</h2>
+
+        <h2 className="m-0">{product.title}</h2>
         <h3 className="text-teal-600 mb-3">R$ {product.price}</h3>
-        <p className="text-700 line-height-3">{product.description}</p>
-        {/* 💡 ALTERE AQUI: O rótulo do botão final de compra ou contato */}
+        <p>{product.description}</p>
+
         <Button
-          label="Tenho Interesse"
+          label="Fechar"
           className="p-button-teal w-full mt-3"
           onClick={() => setVisible(false)}
         />

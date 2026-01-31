@@ -1,22 +1,34 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import api from "../services/api";
 import ProductList from "../components/ProductList";
 
-const Storefront = ({ products, setProducts }) => {
-  return (
-    <div className="fadein">
-      <div className="text-center mb-6">
-        {/* 💡 ALTERE AQUI: O título principal da sua vitrine e o subtítulo */}
-        <h2 className="text-4xl text-teal-900 font-bold mb-2">
-          Galeria de Aquarelas
-        </h2>
-        <p className="text-600 text-lg">
-          Obras exclusivas e materiais para artistas apaixonados.
-        </p>
-      </div>
+function Storefront() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-      <ProductList products={products} setProducts={setProducts} />
+  useEffect(() => {
+    async function loadProducts() {
+      const apiProducts = await api.get("/products");
+      const localProducts =
+        JSON.parse(localStorage.getItem("localProducts")) || [];
+
+      setProducts([...localProducts, ...apiProducts.data]);
+      setLoading(false);
+    }
+
+    loadProducts();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center mt-6">Carregando produtos...</p>;
+  }
+
+  return (
+    <div className="p-4">
+      <h1 className="text-center mb-4">Loja 42 LTDAs</h1>
+      <ProductList products={products} />
     </div>
   );
-};
+}
 
 export default Storefront;
