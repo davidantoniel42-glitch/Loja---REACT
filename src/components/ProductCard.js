@@ -5,6 +5,16 @@ import { Dialog } from "primereact/dialog";
 
 const ProductCard = ({ product }) => {
   const [visible, setVisible] = useState(false);
+  const fallbackImage = "https://via.placeholder.com/300x300?text=Sem+Imagem";
+
+  <img
+    src={product.image || fallbackImage}
+    alt={product.title}
+    onError={(e) => {
+      e.target.src = fallbackImage;
+    }}
+    className="w-full h-12rem object-contain"
+  />;
 
   return (
     <>

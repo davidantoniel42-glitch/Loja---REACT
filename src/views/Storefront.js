@@ -1,32 +1,82 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
-import ProductList from "../components/ProductList";
+import axios from "axios";
+import { Card } from "primereact/card";
+import { Button } from "primereact/button";
 
-function Storefront() {
-  const [products, setProducts] = useState([]);
+function Storefront({ localProducts }) {
+  const [apiProducts, setApiProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadProducts() {
-      const apiProducts = await api.get("/products");
-      const localProducts =
-        JSON.parse(localStorage.getItem("localProducts")) || [];
+  // Placeholder seguro
+  const FALLBACK_IMAGE = "https://via.placeholder.com/300x300?text=Sem+Imagem";
 
-      setProducts([...localProducts, ...apiProducts.data]);
-      setLoading(false);
+  // Normaliza QUALQUER produto (API ou local)
+  function normalizeProduct(product) {
+    return {
+      id: product.id,
+      title: product.title || "Produto sem nome",
+      price: product.price || 0,
+      description: product.description || "",
+      category: product.category || "custom",
+      image:
+        product.image && product.image.startsWith("http")
+          ? product.image
+          : FALLBACK_IMAGE,
+    };
+  }
+
+  // Busca API
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await axios.get("https://fakestoreapi.com/products");
+        setApiProducts(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar produtos da API", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    loadProducts();
+    fetchProducts();
   }, []);
 
+  // Junta tudo e NORMALIZA
+  const allProducts = [...localProducts, ...apiProducts].map(normalizeProduct);
+
   if (loading) {
-    return <p className="text-center mt-6">Carregando produtos...</p>;
+    return <p>Carregando produtos...</p>;
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-center mb-4">Loja 42 LTDAs</h1>
-      <ProductList products={products} />
+    <div className="grid">
+      {allProducts.map((product) => (
+        <div key={product.id} className="col-12 sm:col-6 md:col-4 lg:col-3">
+          <Card
+            title={product.title}
+            subTitle={`R$ ${product.price}`}
+            className="h-full"
+            header={
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full border-round-top"
+                style={{ height: "220px", objectFit: "contain" }}
+              />
+            }
+          >
+            <p className="text-sm text-600">
+              {product.description || "Sem descrição"}
+            </p>
+
+            <Button
+              label="Ver detalhes"
+              icon="pi pi-eye"
+              className="p-button-sm mt-3"
+            />
+          </Card>
+        </div>
+      ))}
     </div>
   );
 }

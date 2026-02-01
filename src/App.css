@@ -13,21 +13,25 @@
   }
 }
 
+/* HEADER — agora coerente com dark theme */
 .App-header {
-  background-color: #282c34;
+  background: linear-gradient(180deg, #020617 0%, #0f172a 50%, #020617 100%);
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #e5e7eb;
 }
 
 .App-link {
-  color: #08b186;
+  color: #38bdf8;
 }
 
+/* animação — APENAS UMA VEZ */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +39,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ===== AJUSTES DO TEMA ARYA BLUE ===== */
+
+body {
+  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+}
+
+.p-card {
+  background-color: #020617;
+  border: 1px solid #1e293b;
+}
+
+.p-button-outlined.p-button-teal {
+  color: #38bdf8;
+  border-color: #38bdf8;
 }

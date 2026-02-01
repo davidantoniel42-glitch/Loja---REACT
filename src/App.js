@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // PrimeReact
-import "primereact/resources/themes/lara-light-teal/theme.css";
+import "primereact/resources/themes/arya-green/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -30,7 +30,6 @@ function App() {
     setLocalProducts([newProduct, ...localProducts]);
     setView("loja");
   }
-
   return (
     <div className="bg-bluegray-50 min-h-screen">
       <header className="bg-teal-700 text-white p-4 shadow-3">
@@ -43,11 +42,17 @@ function App() {
             onClick={() => setView("loja")}
           >
             <i className="pi pi-palette mr-2"></i>
-            Peças e produtos
+            Peças e produtos - Loja 42 LTDA
           </h1>
 
           <Button
-            label={view === "loja" ? "Cadastrar nova peça" : "Voltar para Loja"}
+            label={
+              view === "loja" ? (
+                <section className="text-sm">Cadastrar nova peça</section>
+              ) : (
+                "Voltar para Loja"
+              )
+            }
             icon={view === "loja" ? "pi pi-plus" : "pi pi-arrow-left"}
             className="p-button-sm p-button-info"
             onClick={() => setView(view === "loja" ? "cadastro" : "loja")}
